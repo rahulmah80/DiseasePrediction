@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 from sklearn.neighbors import KNeighborsClassifier
@@ -11,6 +12,7 @@ from sklearn.metrics import plot_confusion_matrix
 from sklearn.tree import export_graphviz
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.metrics import classification_report
 
 # reading raw data
 raw_data = pd.read_csv("DatasetKaggle/dataset.csv")
@@ -123,19 +125,14 @@ y_test1 = test_data1["Disease"].copy()
 # print(x_test1.head())
 # print(y_test1)
 
+
 print("\n----------Random Forest Classifier----------")
 rnd_forest = RandomForestClassifier()
 rnd_forest.fit(x_train, y_train)
 rnd_pred = rnd_forest.predict(x_test)
 rnd_pred1 = rnd_forest.predict(x_test1)
 print("Accuracy for main dataset:", metrics.accuracy_score(y_test, rnd_pred) * 100, "%")
-print("Precision =", metrics.precision_score(y_test, rnd_pred, average='micro') * 100, "%")
-print("f1 score =", metrics.f1_score(y_test, rnd_pred, average='macro') * 100, "%")
-print("Recall score =", metrics.recall_score(y_test, rnd_pred, average='macro') * 100, "%")
 print("Accuracy for new testing dataset:", metrics.accuracy_score(y_test1, rnd_pred1) * 100, "%")
-print("Precision =", metrics.precision_score(y_test1, rnd_pred1, average='micro') * 100, "%")
-print("f1 score =", metrics.f1_score(y_test1, rnd_pred1, average='macro') * 100, "%")
-print("Recall score =", metrics.recall_score(y_test1, rnd_pred1, average='macro') * 100, "%")
 print("Cross Validation Score:", cross_val_score(rnd_forest, x_train, y_train, cv=5).mean() * 100, "%")
 cf_matrix = metrics.confusion_matrix(y_test, rnd_pred)
 plt.figure(figsize=(12, 8))
@@ -153,13 +150,7 @@ knc = KNeighborsClassifier(n_neighbors=7).fit(x_train, y_train)
 knc_pred = knc.predict(x_test)
 knc_pred1 = knc.predict(x_test1)
 print("Accuracy for main dataset:", metrics.accuracy_score(y_test, knc_pred) * 100, "%")
-print("Precision =", metrics.precision_score(y_test, knc_pred, average='micro') * 100, "%")
-print("f1 score =", metrics.f1_score(y_test, knc_pred, average='macro') * 100, "%")
-print("Recall score =", metrics.recall_score(y_test, knc_pred, average='macro') * 100, "%")
 print("Accuracy for new testing dataset:", metrics.accuracy_score(y_test1, knc_pred1) * 100, "%")
-print("Precision =", metrics.precision_score(y_test1, knc_pred1, average='micro') * 100, "%")
-print("f1 score =", metrics.f1_score(y_test1, knc_pred1, average='macro') * 100, "%")
-print("Recall score =", metrics.recall_score(y_test1, knc_pred1, average='macro') * 100, "%")
 print("Cross Validation Score:", cross_val_score(knc, x_train, y_train, cv=5).mean() * 100, "%")
 cf_matrix = metrics.confusion_matrix(y_test, knc_pred)
 plt.figure(figsize=(12, 8))
@@ -178,13 +169,7 @@ svm_model.fit(x_train, y_train)
 svm_pred = svm_model.predict(x_test)
 svm_pred1 = svm_model.predict(x_test1)
 print("Accuracy for main dataset:", metrics.accuracy_score(y_test, svm_pred) * 100, "%")
-print("Precision =", metrics.precision_score(y_test, svm_pred, average='micro') * 100, "%")
-print("f1 score =", metrics.f1_score(y_test, svm_pred, average='macro') * 100, "%")
-print("Recall score =", metrics.recall_score(y_test, svm_pred, average='macro') * 100, "%")
 print("Accuracy for new testing dataset:", metrics.accuracy_score(y_test1, svm_pred1) * 100, "%")
-print("Precision =", metrics.precision_score(y_test1, svm_pred1, average='micro') * 100, "%")
-print("f1 score =", metrics.f1_score(y_test1, svm_pred1, average='macro') * 100, "%")
-print("Recall score =", metrics.recall_score(y_test1, svm_pred1, average='macro') * 100, "%")
 print("Cross Validation Score:", cross_val_score(svm_model, x_train, y_train, cv=5).mean() * 100, "%")
 cf_matrix = metrics.confusion_matrix(y_test, svm_pred)
 plt.figure(figsize=(12, 8))
@@ -203,13 +188,7 @@ gnb.fit(x_train, y_train)
 gnb_pred = gnb.predict(x_test)
 gnb_pred1 = gnb.predict(x_test1)
 print("Accuracy for main dataset:", metrics.accuracy_score(y_test, gnb_pred) * 100, "%")
-print("Precision =", metrics.precision_score(y_test, gnb_pred, average='micro') * 100, "%")
-print("f1 score =", metrics.f1_score(y_test, gnb_pred, average='macro') * 100, "%")
-print("Recall score =", metrics.recall_score(y_test, gnb_pred, average='macro') * 100, "%")
 print("Accuracy for new testing dataset:", metrics.accuracy_score(y_test1, gnb_pred1) * 100, "%")
-print("Precision =", metrics.precision_score(y_test1, gnb_pred1, average='micro') * 100, "%")
-print("f1 score =", metrics.f1_score(y_test1, gnb_pred1, average='macro') * 100, "%")
-print("Recall score =", metrics.recall_score(y_test1, gnb_pred1, average='macro') * 100, "%")
 print("Cross Validation Score:", cross_val_score(gnb, x_train, y_train, cv=5).mean() * 100, "%")
 cf_matrix = metrics.confusion_matrix(y_test, gnb_pred)
 plt.figure(figsize=(12, 8))
